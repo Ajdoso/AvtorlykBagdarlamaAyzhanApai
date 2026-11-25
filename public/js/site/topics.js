@@ -13,10 +13,10 @@ function renderPanel(topic) {
   panel.replaceChildren(
     h('div', { class: 'topic-text' },
       h('h3', {}, topic.heading),
-      h('p', {}, topic.text),
-      h('ul', { class: 'substances' }, topic.substances.map(([code, name, use]) =>
-        h('li', {}, h('span', { class: 'formula' }, formula(code)), h('div', {}, h('b', {}, name), use))))),
+      h('p', {}, topic.text)),
     figure,
+    h('ul', { class: 'substances' }, topic.substances.map(([code, name, use]) =>
+      h('li', {}, h('span', { class: 'formula' }, formula(code)), h('div', {}, h('b', {}, name), use)))),
   );
   panel.setAttribute('aria-labelledby', `tab-${topic.id}`);
 }

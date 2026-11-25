@@ -1,17 +1,17 @@
 /* Shared tokens and components (public site + admin) */
 :root {
-  --mint: #E6F3E6;
-  --pistachio: #EEF4D9;
-  --seafoam: #DAF0E8;
-  --sage: #DCE8DA;
-  --cream: #F8FBF6;
+  --mint: #E8F5E9;
+  --sky: #E3F2FD;
+  --cream: #FAFAFA;
+  --sand: #FBF5E6;
+  --lavender: #ECE8F5;
   --white: #FFFFFF;
   --ink: #263238;
   --ink-soft: #465850;
   --line: #D3E0D4;
   --green: #2F6B4F;
   --green-dark: #24533D;
-  --moss: #4A661F;
+  --violet: #5B4F87;
   --danger: #A23B3B;
   --danger-bg: #FBECEC;
   --display: 'Geologica Variable', system-ui, sans-serif;
@@ -29,7 +29,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 img, svg { display: block; max-width: 100%; }
 a { color: var(--green); }
 [hidden] { display: none !important; }
-:focus-visible { outline: 3px solid var(--moss); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
 sub { font-size: .72em; line-height: 0; }
 
 .wrap { width: min(1160px, 100% - 2.5rem); margin-inline: auto; }
@@ -63,7 +63,7 @@ textarea.input { resize: vertical; }
 
 .dropzone { position: relative; display: grid; gap: .2rem; justify-items: center; padding: 1.4rem 1rem; border: 2px dashed #86B396; border-radius: 12px; background: var(--mint); text-align: center; cursor: pointer; transition: background-color .2s, border-color .2s; }
 .dropzone:hover, .dropzone.is-over { background: #D6EBD8; border-color: var(--green); }
-.dropzone:focus-within { outline: 3px solid var(--moss); outline-offset: 2px; }
+.dropzone:focus-within { outline: 3px solid var(--violet); outline-offset: 2px; }
 .dropzone input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 .dropzone strong { font-weight: 500; overflow-wrap: anywhere; }
 .dropzone span { color: var(--ink-soft); font-size: .9375rem; }
@@ -76,11 +76,11 @@ textarea.input { resize: vertical; }
 .dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem; margin-top: 1.5rem; }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(12px); } }
 
-.file-type { flex: none; display: grid; place-items: center; width: 52px; height: 60px; border-radius: 4px 14px 4px 4px; font: 600 .8125rem/1 var(--display); background: var(--sage); color: var(--moss); }
-.file-type[data-ext='pdf'] { background: #E9F1CC; color: #4A5E14; }
-.file-type[data-ext^='doc'] { background: #D3EDE6; color: #1C5F55; }
-.file-type[data-ext^='ppt'] { background: #D9EDD6; color: #2F6B3A; }
-.file-type[data-ext^='xls'] { background: #DFE7DC; color: #3F5A45; }
+.file-type { flex: none; display: grid; place-items: center; width: 52px; height: 60px; border-radius: 4px 14px 4px 4px; font: 600 .8125rem/1 var(--display); background: var(--lavender); color: var(--violet); }
+.file-type[data-ext='pdf'] { background: #F7E6E4; color: #86403A; }
+.file-type[data-ext^='doc'] { background: #E3F2FD; color: #245A86; }
+.file-type[data-ext^='ppt'] { background: #ECE8F5; color: #5B4F87; }
+.file-type[data-ext^='xls'] { background: #E8F5E9; color: #2F6B4F; }
 
 .state { display: grid; justify-items: center; gap: .75rem; padding: 3rem 1.25rem; border-radius: 16px; background: var(--white); text-align: center; grid-column: 1 / -1; }
 .state svg { width: 72px; color: #86B396; }

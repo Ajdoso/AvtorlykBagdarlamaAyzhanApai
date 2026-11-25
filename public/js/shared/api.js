@@ -7,9 +7,7 @@ export class ApiError extends Error {
 
 export async function api(path, { method = 'GET', body } = {}) {
   const options = { method };
-  if (body instanceof FormData) {
-    options.body = body;
-  } else if (body) {
+  if (body) {
     options.body = JSON.stringify(body);
     options.headers = { 'Content-Type': 'application/json' };
   }

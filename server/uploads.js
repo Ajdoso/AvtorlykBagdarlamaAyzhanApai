@@ -1,36 +1,40 @@
-import fs from 'node:fs';
+// An upload has three steps:
+//   1. startUpload   the server approves the name and size and returns where to send the file
+//   2. the browser sends the file (straight to Vercel Blob online, so the 4.5 MB function limit does not apply)
+//   3. finishUpload  the server checks what arrived before the file is used
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import multer from 'multer';
-import {
-  CATEGORIES, FILES_DIR, FILE_EXTENSIONS, HERO_DIR, IMAGE_EXTENSIONS, MAX_FILE_MB, MAX_IMAGE_MB,
-} from './config.js';
+import { CATEGORIES, FILE_EXTENSIONS, IMAGE_EXTENSIONS, MAX_FILE_MB, MAX_IMAGE_MB } from './config.js';
+import { UserError } from './errors.js';
+import { storage } from './storage.js';
+import * as store from './store.js';
 
-export class UserError extends Error {
-  constructor(message, status = 400) {
-    super(message);
-    this.status = status;
+const KINDS = {
+  document: { folder: 'files', extensions: FILE_EXTENSIONS, maxMb: MAX_FILE_MB },
+  hero: { folder: 'hero', extensions: IMAGE_EXTENSIONS, maxMb: MAX_IMAGE_MB },
+};
+export const maxBytes = (kind) => KINDS[kind].maxMb * 1024 * 1024;
+export const extOf = (name) => path.extname(name).slice(1).toLowerCase();
+
+export async function startUpload(body, isAdmin) {
+  const kind = body?.kind;
+  if (kind !== 'document' && kind !== 'hero') throw new UserError('Сұрау қате құрылған.');
+  const { folder, extensions, maxMb } = KINDS[kind];
+  const ext = extOf(String(body.name ?? ''));
+  if (!extensions.includes(ext)) {
+    throw new UserError(`Бұл файл түрі қабылданбайды. Рұқсат етілгені: ${extensions.join(', ').toUpperCase()}.`);
   }
+  if (!(Number(body.size) > 0)) throw new UserError('Файл бос.');
+  if (Number(body.size) > maxBytes(kind)) throw new UserError(`Файл тым үлкен. Шегі — ${maxMb} МБ.`);
+
+  const id = randomUUID();
+  const pathname = `${folder}/${randomUUID()}.${ext}`;
+  await store.addUpload({ id, pathname, kind, isAdmin, expiresAt: new Date(Date.now() + 30 * 60_000) });
+  // A fixed neutral type: visitors always get the file as a download, never as a page.
+  const contentType = 'application/octet-stream';
+  const target = await storage.uploadTarget({ id, pathname, contentType, maxBytes: maxBytes(kind) });
+  return { id, contentType, ...target };
 }
-
-const extOf = (name) => path.extname(name).slice(1).toLowerCase();
-
-function uploader(dir, field, extensions, maxMb) {
-  return multer({
-    storage: multer.diskStorage({
-      destination: dir,
-      filename: (req, file, cb) => cb(null, `${randomUUID()}.${extOf(file.originalname)}`),
-    }),
-    limits: { fileSize: maxMb * 1024 * 1024, files: 1, fields: 10, fieldSize: 10_000 },
-    fileFilter: (req, file, cb) => {
-      if (extensions.includes(extOf(file.originalname))) cb(null, true);
-      else cb(new UserError(`Бұл файл түрі қабылданбайды. Рұқсат етілгені: ${extensions.join(', ').toUpperCase()}.`));
-    },
-  }).single(field);
-}
-
-export const uploadDocument = uploader(FILES_DIR, 'file', FILE_EXTENSIONS, MAX_FILE_MB);
-export const uploadHero = uploader(HERO_DIR, 'image', IMAGE_EXTENSIONS, MAX_IMAGE_MB);
 
 // The first bytes must agree with the extension, so a renamed file is refused.
 const bytes = (...values) => (b) => values.every((v, i) => b[i] === v);
@@ -49,19 +53,34 @@ const CHECKS = {
   avif: ascii(4, 'ftypavi'),
 };
 
-export function verifyContent(file) {
-  const buffer = Buffer.alloc(Math.min(512, file.size));
-  const fd = fs.openSync(file.path, 'r');
-  fs.readSync(fd, buffer, 0, buffer.length, 0);
-  fs.closeSync(fd);
-  if (!file.size || !CHECKS[extOf(file.filename)](buffer)) {
-    throw new UserError('Файл бос немесе мазмұны кеңейтіміне сәйкес емес.');
+async function discard(pathname) {
+  try {
+    await storage.remove(pathname);
+  } catch (err) {
+    console.error('Could not remove', pathname, err.message);
   }
 }
 
-export function discard(req) {
-  if (req.file) fs.rmSync(req.file.path, { force: true });
+export async function finishUpload(uploadId, kind, isAdmin) {
+  const upload = await store.takeUpload(String(uploadId ?? ''), kind, isAdmin);
+  if (!upload) throw new UserError('Жүктеу уақыты өтіп кетті. Файлды қайта таңдаңыз.');
+  const { pathname } = upload;
+  const ext = extOf(pathname);
+  const info = await storage.inspect(pathname);
+  if (!info) throw new UserError('Файл серверге жетпеді. Қайталап көріңіз.');
+  if (!info.size || info.size > maxBytes(kind) || !CHECKS[ext](info.start)) {
+    await discard(pathname);
+    throw new UserError('Файл бос, тым үлкен немесе мазмұны кеңейтіміне сәйкес емес.');
+  }
+  return { pathname, ext, size: info.size };
 }
+
+// Files that were sent but never attached (the visitor closed the page, for example).
+export async function cleanUpAbandoned() {
+  for (const pathname of await store.takeExpiredUploads()) await discard(pathname);
+}
+
+export { discard };
 
 const text = (value, max) => String(value ?? '').trim().slice(0, max);
 
@@ -74,21 +93,19 @@ export function readMeta(body) {
   return { title, description, category: body.category };
 }
 
-export function buildRecord(req, status) {
-  if (!req.file) throw new UserError('Файлды таңдаңыз.');
+export async function createRecord(req, { isAdmin }) {
   const meta = readMeta(req.body);
-  verifyContent(req.file);
-  return {
-    id: randomUUID(),
-    ...meta,
-    author: text(req.body.author, 80),
-    ext: extOf(req.file.filename),
-    storedName: req.file.filename,
-    size: req.file.size,
-    status,
-    downloads: 0,
-    createdAt: new Date().toISOString(),
-  };
+  const file = await finishUpload(req.body.uploadId, 'document', isAdmin);
+  try {
+    await store.addFile({
+      id: randomUUID(), ...meta, ...file,
+      author: text(req.body.author, 80),
+      status: isAdmin ? 'approved' : 'pending',
+    });
+  } catch (err) {
+    await discard(file.pathname);
+    throw err;
+  }
 }
 
 export function parseHeroUrl(value) {

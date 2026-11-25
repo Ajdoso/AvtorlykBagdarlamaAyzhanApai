@@ -39,8 +39,6 @@ export function formatDate(iso) {
   return [d.getDate(), d.getMonth() + 1].map((n) => String(n).padStart(2, '0')).concat(d.getFullYear()).join('.');
 }
 
-export const normalize = (text) => text.toLocaleLowerCase('kk');
-
 export function fillCategories(select) {
   select.replaceChildren(
     h('option', { value: '' }, 'Санатты таңдаңыз'),

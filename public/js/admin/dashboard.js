@@ -1,5 +1,6 @@
 import { api as request } from '../shared/api.js';
 import { createDropzone, handleForm, metaProblem, setupDialog } from '../shared/forms.js';
+import { sendFileForm, uploadFile } from '../shared/upload.js';
 import {
   CATEGORIES, fileType, fillCategories, formatDate, formatSize, h, stateBlock, toast,
 } from '../shared/utils.js';
@@ -136,7 +137,7 @@ handleForm(uploadForm, {
   busyLabel: 'Жүктелуде…',
   validate: () => metaProblem(uploadForm) || uploadZone.problem(),
   send: async (data) => {
-    await api('/admin/files', { method: 'POST', body: data });
+    await sendFileForm(data, { startPath: '/admin/uploads', path: '/admin/files', api });
     uploadForm.reset();
     uploadZone.reset();
     toast('Файл жарияланды.');
@@ -165,7 +166,8 @@ handleForm(heroFileForm, {
   busyLabel: 'Жүктелуде…',
   validate: () => heroZone.problem(),
   send: async (data) => {
-    const result = await api('/admin/hero/file', { method: 'PUT', body: data });
+    const uploadId = await uploadFile(data.get('image'), { kind: 'hero', startPath: '/admin/uploads', api });
+    const result = await api('/admin/hero/file', { method: 'PUT', body: { uploadId } });
     heroZone.reset();
     showHero(result);
     toast('Басты сурет ауыстырылды.');

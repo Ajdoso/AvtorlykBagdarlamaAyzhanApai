@@ -1,17 +1,15 @@
 import { api } from '../shared/api.js';
 import { createDropzone, handleForm, metaProblem, setupDialog } from '../shared/forms.js';
+import { sendFileForm } from '../shared/upload.js';
 import {
-  CATEGORIES, fileType, fillCategories, formatDate, formatSize, h, normalize, stateBlock, toast,
+  CATEGORIES, fileType, fillCategories, formatDate, formatSize, h, stateBlock, toast,
 } from '../shared/utils.js';
 
 const list = document.getElementById('file-list');
 const status = document.getElementById('file-status');
-const search = document.getElementById('file-search');
-const filters = document.getElementById('file-filters');
 const dialog = document.getElementById('submit-dialog');
 
 let files = [];
-let category = 'all';
 
 function card(file) {
   return h('article', { class: 'file-card' },
@@ -30,29 +28,15 @@ function card(file) {
 }
 
 function render() {
-  const query = normalize(search.value.trim());
-  const shown = files.filter((f) =>
-    (category === 'all' || f.category === category) && normalize(`${f.title} ${f.description}`).includes(query));
-  status.textContent = `${shown.length} материал табылды`;
-  if (shown.length) {
-    list.replaceChildren(...shown.map(card));
-  } else if (!files.length) {
-    list.replaceChildren(stateBlock({
-      title: 'Әзірге материал жоқ', text: 'Алғашқы материалды сіз ұсына аласыз.',
-      action: { label: 'Материал ұсыну', run: () => dialog.showModal() },
-    }));
-  } else {
-    list.replaceChildren(stateBlock({
-      title: 'Ештеңе табылмады', text: 'Басқа сөзбен іздеңіз немесе барлық санатты ашыңыз.',
-      action: { label: 'Сүзгіні тазалау', run: () => { search.value = ''; setCategory('all'); } },
-    }));
+  status.textContent = `${files.length} материал бар`;
+  if (files.length) {
+    list.replaceChildren(...files.map(card));
+    return;
   }
-}
-
-function setCategory(value) {
-  category = value;
-  for (const chip of filters.children) chip.setAttribute('aria-pressed', String(chip.dataset.value === value));
-  render();
+  list.replaceChildren(stateBlock({
+    title: 'Әзірге материал жоқ', text: 'Алғашқы материалды сіз ұсына аласыз.',
+    action: { label: 'Материал ұсыну', run: () => dialog.showModal() },
+  }));
 }
 
 async function load() {
@@ -82,7 +66,7 @@ function initSubmission() {
     busyLabel: 'Жіберілуде…',
     validate: () => metaProblem(form) || dropzone.problem(),
     send: async (data) => {
-      await api('/submissions', { method: 'POST', body: data });
+      await sendFileForm(data, { startPath: '/uploads', path: '/submissions' });
       form.reset();
       dropzone.reset();
       dialog.close();
@@ -92,13 +76,6 @@ function initSubmission() {
 }
 
 export function initLibrary() {
-  for (const [value, label] of [['all', 'Барлығы'], ...Object.entries(CATEGORIES)]) {
-    filters.append(h('button', {
-      class: 'chip', type: 'button', 'data-value': value, 'aria-pressed': String(value === 'all'),
-      onclick: () => setCategory(value),
-    }, label));
-  }
-  search.addEventListener('input', render);
   initSubmission();
   load();
 }

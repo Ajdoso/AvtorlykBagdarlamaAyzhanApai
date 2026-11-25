@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" width="1920" height="1200">
+  <!-- Placeholder picture. Replace it: see "Басты суретті ауыстыру" in README.md -->
+  <rect width="1920" height="1200" fill="#E3F2FD"/>
+  <!-- window -->
+  <rect x="900" y="60" width="900" height="760" rx="18" fill="#FAFAFA"/>
+  <rect x="930" y="90" width="405" height="700" fill="#D3E9F8"/>
+  <rect x="1365" y="90" width="405" height="700" fill="#D3E9F8"/>
+  <circle cx="1590" cy="240" r="84" fill="#FFF6DC"/>
+  <path d="M930 640 Q1060 520 1200 600 T1335 570 V790 H930Z" fill="#D5EBD8"/>
+  <path d="M1365 575 Q1500 500 1620 590 T1770 560 V790 H1365Z" fill="#D5EBD8"/>
+  <path d="M930 710 Q1080 640 1335 700 V790 H930Z" fill="#BFDFC5"/>
+  <path d="M1365 700 Q1560 630 1770 705 V790 H1365Z" fill="#BFDFC5"/>
+  <!-- sill -->
+  <rect y="900" width="1920" height="300" fill="#E8F5E9"/>
+  <rect y="880" width="1920" height="44" fill="#FAFAFA"/>
+  <g fill="#263238" opacity=".07">
+    <ellipse cx="1010" cy="890" rx="120" ry="11"/><ellipse cx="1260" cy="890" rx="150" ry="12"/>
+    <ellipse cx="1500" cy="890" rx="90" ry="10"/><ellipse cx="1690" cy="890" rx="110" ry="11"/>
+  </g>
+  <!-- spray bottle -->
+  <path d="M955 884 V650 Q955 600 985 580 V530 H1040 V580 Q1070 600 1070 650 V884 Q1070 890 1060 890 H965 Q955 890 955 884Z" fill="#B9DCC6"/>
+  <path d="M970 470 H1062 Q1074 470 1074 482 V530 H978 V504 H930 V482 Q940 470 970 470Z" fill="#5E7F73"/>
+  <path d="M978 530 Q960 560 940 572 L930 560 Q950 540 955 520Z" fill="#5E7F73"/>
+  <rect x="974" y="680" width="78" height="120" rx="8" fill="#FAFAFA"/>
+  <path d="M1013 702 C1030 728 1038 742 1038 756 A25 25 0 0 1 988 756 C988 742 996 728 1013 702Z" fill="#A9D3EE"/>
+  <!-- conical flask -->
+  <path d="M1222 500 H1300 V620 L1392 850 Q1406 890 1366 890 H1156 Q1116 890 1130 850 L1222 620Z" fill="#FFFFFF" opacity=".78"/>
+  <path d="M1183 720 Q1222 704 1261 720 T1340 720 L1385 850 Q1396 880 1364 880 H1158 Q1126 880 1137 850Z" fill="#CFC5E8"/>
+  <g fill="#FFFFFF" opacity=".7"><circle cx="1220" cy="800" r="16"/><circle cx="1290" cy="770" r="11"/><circle cx="1318" cy="832" r="20"/><circle cx="1255" cy="846" r="9"/></g>
+  <path d="M1222 500 H1300 V620 L1392 850 Q1406 890 1366 890 H1156 Q1116 890 1130 850 L1222 620Z" fill="none" stroke="#7F8FA0" stroke-width="5"/>
+  <rect x="1208" y="486" width="106" height="20" rx="10" fill="#7F8FA0"/>
+  <!-- salt jar -->
+  <rect x="1430" y="700" width="140" height="190" rx="20" fill="#FFFFFF" opacity=".85"/>
+  <path d="M1438 780 Q1500 762 1562 780 V868 Q1562 882 1548 882 H1452 Q1438 882 1438 868Z" fill="#F3EBD6"/>
+  <rect x="1420" y="668" width="160" height="40" rx="10" fill="#C9A98A"/>
+  <rect x="1462" y="800" width="76" height="44" rx="6" fill="#FAFAFA"/>
+  <text x="1500" y="831" font-family="sans-serif" font-size="26" text-anchor="middle" fill="#5A656B">NaCl</text>
+  <!-- lemon and soap -->
+  <ellipse cx="1690" cy="826" rx="92" ry="62" fill="#F6E29A"/>
+  <path d="M1775 806 Q1806 816 1800 836 Q1786 846 1772 842Z" fill="#F6E29A"/>
+  <ellipse cx="1664" cy="802" rx="32" ry="13" fill="#FFF6D0" opacity=".8"/>
+  <rect x="1610" y="976" width="230" height="84" rx="38" fill="#E5DEF3"/>
+  <rect x="1650" y="1002" width="150" height="32" rx="16" fill="#D3C8EA"/>
+  <g fill="#FFFFFF" opacity=".8"><circle cx="1590" cy="1050" r="24"/><circle cx="1560" cy="1020" r="14"/><circle cx="1850" cy="1054" r="20"/></g>
+</svg>

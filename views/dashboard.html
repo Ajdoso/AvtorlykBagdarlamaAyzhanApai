@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Әкімші панелі</title>
+  <link rel="icon" href="/images/favicon.svg">
+  <link rel="stylesheet" href="/fonts/geologica/wght.css">
+  <link rel="stylesheet" href="/fonts/golos/wght.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <script src="/js/admin/dashboard.js" type="module"></script>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="wrap admin-header-row">
+      <h1>Әкімші панелі</h1>
+      <div class="admin-links">
+        <a class="button button-quiet button-small" href="/" target="_blank" rel="noopener">Сайтты ашу</a>
+        <button class="button button-quiet button-small" id="logout" type="button">Шығу</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap admin-main">
+    <section class="panel files-panel" aria-labelledby="files-title">
+      <div class="panel-head">
+        <h2 id="files-title">Файлдар</h2>
+        <div class="segmented" id="status-filter" role="group" aria-label="Күйі бойынша сүзу"></div>
+      </div>
+      <div id="admin-files"></div>
+    </section>
+
+    <div class="side">
+      <section class="panel" aria-labelledby="upload-title">
+        <h2 id="upload-title">Файл қосу</h2>
+        <form class="form" id="upload-form" novalidate>
+          <label class="field">Атауы<input class="input" name="title" maxlength="120" required></label>
+          <label class="field">Санаты<select class="input" name="category" required></select></label>
+          <label class="field">Сипаттамасы<textarea class="input" name="description" rows="3" maxlength="500" required></textarea></label>
+          <div data-dropzone></div>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="button" type="submit">Жариялау</button>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="hero-title">
+        <h2 id="hero-title">Басты сурет</h2>
+        <div class="hero-preview"><img id="hero-preview" alt="Қазіргі басты сурет"></div>
+        <form class="form" id="hero-file-form" novalidate>
+          <div data-dropzone></div>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="button" type="submit">Суретті қою</button>
+        </form>
+        <form class="form" id="hero-url-form" novalidate>
+          <label class="field">Немесе сурет сілтемесі<input class="input" type="url" name="url" placeholder="https://" required></label>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="button button-quiet" type="submit">Сілтемедегі суретті қою</button>
+        </form>
+        <button class="button text-danger button-small" id="hero-reset" type="button" hidden>Бастапқы суретке қайтару</button>
+      </section>
+    </div>
+  </main>
+
+  <dialog class="dialog" id="edit-dialog" aria-labelledby="edit-title">
+    <form class="form" id="edit-form" novalidate>
+      <div class="dialog-head">
+        <h2 id="edit-title">Мәліметті өзгерту</h2>
+        <button class="icon-button" type="button" data-close aria-label="Терезені жабу">×</button>
+      </div>
+      <label class="field">Атауы<input class="input" name="title" maxlength="120" required></label>
+      <label class="field">Санаты<select class="input" name="category" required></select></label>
+      <label class="field">Сипаттамасы<textarea class="input" name="description" rows="4" maxlength="500" required></textarea></label>
+      <p class="form-error" role="alert" hidden></p>
+      <button class="button" type="submit">Сақтау</button>
+    </form>
+  </dialog>
+
+  <dialog class="dialog" id="delete-dialog" aria-labelledby="delete-title">
+    <h2 id="delete-title">Файлды жою керек пе?</h2>
+    <p class="delete-text"><b id="delete-name"></b> сайттан біржола жойылады. Оны қалпына келтіру мүмкін емес.</p>
+    <div class="dialog-actions">
+      <button class="button button-quiet" type="button" data-close>Бас тарту</button>
+      <button class="button button-danger" id="delete-confirm" type="button">Жою</button>
+    </div>
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,37 @@
+.login-page { display: grid; place-items: center; min-height: 100svh; padding: 1.25rem; background: var(--mint); }
+.login-box { display: grid; gap: 1.5rem; width: min(420px, 100%); padding: clamp(1.75rem, 6vw, 2.75rem); border-radius: 20px; background: var(--white); }
+.login-box h1 { font-size: 1.75rem; }
+
+.admin-header { position: sticky; top: 0; z-index: 10; background: var(--white); border-bottom: 1px solid var(--line); }
+.admin-header-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 68px; }
+.admin-header h1 { font-size: 1.25rem; }
+.admin-links { display: flex; gap: .5rem; }
+.admin-main { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 1.5rem; align-items: start; padding-block: 2rem 4rem; }
+.side { display: grid; gap: 1.5rem; }
+.panel { display: grid; gap: 1.25rem; padding: 1.5rem; border: 1px solid var(--line); border-radius: 16px; background: var(--white); }
+.panel h2 { font-size: 1.375rem; }
+.panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.panel .skeleton { height: 92px; margin-bottom: .75rem; }
+
+.segmented { display: flex; flex-wrap: wrap; gap: .25rem; padding: .25rem; border-radius: 12px; background: var(--mint); }
+.segmented button { min-height: 38px; padding: .3rem .8rem; border: 0; border-radius: 9px; background: transparent; color: var(--ink); font: 500 .9375rem var(--body); cursor: pointer; }
+.segmented button[aria-pressed='true'] { background: var(--white); color: var(--green); }
+
+.admin-file { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .5rem 1rem; padding-block: 1.1rem; border-top: 1px solid var(--line); }
+.admin-file h3 { font-size: 1.0625rem; line-height: 1.35; letter-spacing: 0; overflow-wrap: anywhere; }
+.admin-file p { color: var(--ink-soft); font-size: .9375rem; overflow-wrap: anywhere; }
+.admin-file .pending { color: #7A4E12; font-weight: 500; }
+.admin-file-actions { grid-column: 2; display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .35rem; }
+
+.hero-preview { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; background: var(--sky); }
+.hero-preview img { width: 100%; height: 100%; object-fit: cover; }
+.delete-text { margin-top: .9rem; overflow-wrap: anywhere; }
+
+@media (max-width: 940px) {
+  .admin-main { grid-template-columns: minmax(0, 1fr); }
+  .files-panel { order: 1; }
+}
+@media (max-width: 520px) {
+  .panel { padding: 1.1rem; }
+  .admin-file-actions { grid-column: 1 / -1; }
+}

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Химияның тұрмыста қолдануы</title>
+  <meta name="description" content="Тазартқыш заттар, тағам, косметика және дәрі-дәрмектер химиясы туралы түсінікті мәлімет пен жүктеуге арналған оқу материалдары.">
+  <meta name="theme-color" content="#E3F2FD">
+  <link rel="icon" href="/images/favicon.svg">
+  <link rel="stylesheet" href="/fonts/geologica/wght.css">
+  <link rel="stylesheet" href="/fonts/golos/wght.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site/main.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Негізгі мазмұнға өту</a>
+
+  <header class="site-header" id="site-header">
+    <div class="wrap header-row">
+      <a class="brand" href="#top">
+        <img src="/images/favicon.svg" alt="" width="32" height="32">
+        <span>Тұрмыстағы химия</span>
+      </a>
+      <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Мәзір</button>
+      <nav class="site-nav" id="site-nav" aria-label="Негізгі мәзір">
+        <a href="#topics">Тақырыптар</a>
+        <a href="#safety">Қауіпсіздік</a>
+        <a href="#library">Материалдар</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO
+         The background picture is loaded by public/js/site/hero.js.
+         To replace it, either:
+           1) open /admin and choose a file or a link under "Басты сурет", or
+           2) put a file in public/images/ and change DEFAULT_HERO_IMAGE in server/config.js -->
+    <section class="hero" id="top">
+      <div class="hero-media" data-parallax="0.32"><img id="hero-image" alt=""></div>
+      <div class="hero-scrim"></div>
+      <svg class="hero-molecule" data-parallax="-0.22" viewBox="0 0 420 360" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+          <path d="M110 90 180 50 250 90V170L180 210 110 170Z"/><path d="M124 99v62M180 66l56 32M236 162l-56 32"/>
+          <path d="M250 170 320 210V290M110 170 40 210M180 50V8"/><path d="M328 210 384 178"/>
+        </g>
+        <g fill="currentColor"><circle cx="320" cy="298" r="11"/><circle cx="32" cy="214" r="11"/><circle cx="394" cy="172" r="11"/></g>
+      </svg>
+      <div class="wrap hero-content">
+        <h1>Химияның тұрмыста қолдануы</h1>
+        <p>Қамыр неге көтеріледі, сабын майды қалай кетіреді, дәрі ағзаға қалай әсер етеді? Жауабы ас үйдегі сөреде және дәрі қобдишасында тұр.</p>
+        <a class="button button-large" href="#library">Материалдарды көру</a>
+      </div>
+    </section>
+
+    <section class="section topics" id="topics" aria-labelledby="topics-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <h2 id="topics-title">Үйдегі заттардың құрамы</h2>
+          <p>Бөлімді таңдап, күнде қолданатын заттардың ішінде не барын көріңіз.</p>
+        </div>
+        <div class="topic-tabs" id="topic-tabs" role="tablist" aria-label="Тақырыптар"></div>
+        <div class="topic-panel" id="topic-panel" role="tabpanel" tabindex="0"></div>
+      </div>
+    </section>
+
+    <section class="section safety" id="safety" aria-labelledby="safety-title">
+      <div class="wrap safety-grid">
+        <div class="section-head reveal">
+          <h2 id="safety-title">Бұларды араластырмаңыз</h2>
+          <p>Жеке қолданғанда таныс заттар бірге қосылғанда улы өнім түзуі мүмкін. Тазартқыштарды бір-бірінен бөлек қолданып, бөлмені желдетіңіз.</p>
+          <p class="emergency">Уланған жағдайда таза ауаға шығып, <a href="tel:103">103</a> нөміріне хабарласыңыз.</p>
+        </div>
+        <ul class="mix-list reveal">
+          <li><p class="mix"><span>Ағартқыш</span><b>+</b><span>Сірке суы</span></p><p>Улы хлор газы бөлінеді. Ол көз бен тыныс жолын күйдіреді.</p></li>
+          <li><p class="mix"><span>Ағартқыш</span><b>+</b><span>Аммиак</span></p><p>Хлораминдер түзіледі. Олар жөтел мен ентігу тудырады.</p></li>
+          <li><p class="mix"><span>Ағартқыш</span><b>+</b><span>Спирт</span></p><p>Хлороформ және басқа зиянды қосылыстар пайда болуы мүмкін.</p></li>
+          <li><p class="mix"><span>Сутек асқын тотығы</span><b>+</b><span>Сірке суы</span></p><p>Бір ыдыста тері мен көзді тітіркендіретін асқын сірке қышқылы түзіледі.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section library" id="library" aria-labelledby="library-title">
+      <div class="wrap">
+        <div class="section-head library-head reveal">
+          <div>
+            <h2 id="library-title">Оқу материалдары</h2>
+            <p>Нұсқаулықтар, презентациялар мен зертханалық жұмыстарды тегін жүктеп алыңыз.</p>
+          </div>
+          <button class="button button-quiet" type="button" data-open-submit>Материал ұсыну</button>
+        </div>
+        <div class="library-tools">
+          <label class="search"><span class="visually-hidden">Материал іздеу</span>
+            <input class="input" type="search" id="file-search" placeholder="Атауы немесе сипаттамасы бойынша іздеу" autocomplete="off">
+          </label>
+          <div class="chips" id="file-filters" role="group" aria-label="Санат бойынша сүзу"></div>
+        </div>
+        <p class="visually-hidden" id="file-status" role="status"></p>
+        <div id="file-list" class="file-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <p>Сайттағы мәлімет оқу мақсатында берілген. Дәрі қабылдар алдында дәрігермен кеңесіңіз.</p>
+      <a href="/admin">Әкімшіге кіру</a>
+    </div>
+  </footer>
+
+  <dialog class="dialog" id="submit-dialog" aria-labelledby="submit-title">
+    <form class="form" id="submit-form" novalidate>
+      <div class="dialog-head">
+        <h2 id="submit-title">Материал ұсыну</h2>
+        <button class="icon-button" type="button" data-close aria-label="Терезені жабу">×</button>
+      </div>
+      <p class="form-note">Әкімші тексергеннен кейін материал сайтта жарияланады.</p>
+      <label class="field">Атауы<input class="input" name="title" maxlength="120" required></label>
+      <label class="field">Санаты<select class="input" name="category" required></select></label>
+      <label class="field">Сипаттамасы<textarea class="input" name="description" rows="3" maxlength="500" required></textarea></label>
+      <label class="field">Авторы (міндетті емес)<input class="input" name="author" maxlength="80" autocomplete="name"></label>
+      <div data-dropzone></div>
+      <p class="form-error" role="alert" hidden></p>
+      <button class="button" type="submit">Тексеруге жіберу</button>
+    </form>
+  </dialog>
+</body>
+</html>

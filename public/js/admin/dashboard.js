@@ -1,5 +1,6 @@
 import { api as request } from '../shared/api.js';
 import { createDropzone, handleForm, metaProblem, setupDialog } from '../shared/forms.js';
+import { initAdminReviews } from './reviews.js';
 import { sendFileForm, uploadFile } from '../shared/upload.js';
 import {
   CATEGORIES, fileType, fillCategories, formatDate, formatSize, h, stateBlock, toast,
@@ -19,9 +20,7 @@ async function api(path, options) {
 
 /* ---------- File list ---------- */
 const list = $('admin-files');
-const FILTERS = { all: 'Барлығы', pending: 'Тексеруде', approved: 'Жарияланған' };
 let files = [];
-let filter = 'all';
 let activeFile = null;
 
 function row(file) {
@@ -44,21 +43,8 @@ function row(file) {
       h('button', { class: 'button button-small text-danger', type: 'button', onclick: () => openDelete(file), 'aria-label': `Жою: ${file.title}` }, 'Жою')));
 }
 
-function renderFilters() {
-  $('status-filter').replaceChildren(...Object.entries(FILTERS).map(([value, label]) => {
-    const count = value === 'all' ? files.length : files.filter((f) => f.status === value).length;
-    return h('button', {
-      type: 'button', 'aria-pressed': String(filter === value),
-      onclick: () => { filter = value; render(); },
-    }, `${label} (${count})`);
-  }));
-}
-
 function render() {
-  renderFilters();
-  const shown = files.filter((f) => filter === 'all' || f.status === filter);
-  if (shown.length) list.replaceChildren(...shown.map(row));
-  else if (filter === 'pending') list.replaceChildren(stateBlock({ title: 'Тексеретін файл жоқ', text: 'Келушілер ұсынған материалдар осында шығады.' }));
+  if (files.length) list.replaceChildren(...files.map(row));
   else list.replaceChildren(stateBlock({ title: 'Әзірге файл жоқ', text: '«Файл қосу» бөлімінен алғашқы материалды жариялаңыз.' }));
 }
 
@@ -217,4 +203,5 @@ $('logout').addEventListener('click', async () => {
 });
 
 load();
+initAdminReviews(api);
 api('/settings').then(showHero).catch((error) => toast(error.message, { error: true }));

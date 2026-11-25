@@ -16,7 +16,7 @@ const KINDS = {
 export const maxBytes = (kind) => KINDS[kind].maxMb * 1024 * 1024;
 export const extOf = (name) => path.extname(name).slice(1).toLowerCase();
 
-export async function startUpload(body, isAdmin) {
+export async function startUpload(body) {
   const kind = body?.kind;
   if (kind !== 'document' && kind !== 'hero') throw new UserError('Сұрау қате құрылған.');
   const { folder, extensions, maxMb } = KINDS[kind];
@@ -29,7 +29,7 @@ export async function startUpload(body, isAdmin) {
 
   const id = randomUUID();
   const pathname = `${folder}/${randomUUID()}.${ext}`;
-  await store.addUpload({ id, pathname, kind, isAdmin, expiresAt: new Date(Date.now() + 30 * 60_000) });
+  await store.addUpload({ id, pathname, kind, isAdmin: true, expiresAt: new Date(Date.now() + 30 * 60_000) });
   // A fixed neutral type: visitors always get the file as a download, never as a page.
   const contentType = 'application/octet-stream';
   const target = await storage.uploadTarget({ id, pathname, contentType, maxBytes: maxBytes(kind) });
@@ -61,8 +61,8 @@ async function discard(pathname) {
   }
 }
 
-export async function finishUpload(uploadId, kind, isAdmin) {
-  const upload = await store.takeUpload(String(uploadId ?? ''), kind, isAdmin);
+export async function finishUpload(uploadId, kind) {
+  const upload = await store.takeUpload(String(uploadId ?? ''), kind, true);
   if (!upload) throw new UserError('Жүктеу уақыты өтіп кетті. Файлды қайта таңдаңыз.');
   const { pathname } = upload;
   const ext = extOf(pathname);
@@ -93,14 +93,14 @@ export function readMeta(body) {
   return { title, description, category: body.category };
 }
 
-export async function createRecord(req, { isAdmin }) {
+export async function createRecord(req) {
   const meta = readMeta(req.body);
-  const file = await finishUpload(req.body.uploadId, 'document', isAdmin);
+  const file = await finishUpload(req.body.uploadId, 'document');
   try {
     await store.addFile({
       id: randomUUID(), ...meta, ...file,
-      author: text(req.body.author, 80),
-      status: isAdmin ? 'approved' : 'pending',
+      author: '',
+      status: 'approved',
     });
   } catch (err) {
     await discard(file.pathname);

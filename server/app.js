@@ -5,10 +5,12 @@ import * as config from './config.js';
 import * as store from './store.js';
 import { UserError } from './errors.js';
 import { isAdmin, login, logout, rateLimit, requireAdmin } from './auth.js';
+import { adminReviews, reviews } from './reviews.js';
 import { storage, usesDisk } from './storage.js';
 import {
   cleanUpAbandoned, createRecord, discard, extOf, finishUpload, maxBytes, parseHeroUrl, readMeta, startUpload,
 } from './uploads.js';
+import { users } from './users.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -98,18 +100,8 @@ app.get('/hero/:name', async (req, res, next) => {
 });
 
 /* ---------- Uploads ---------- */
-const startLimit = rateLimit({
-  name: 'upload', max: 10, windowMs: HOUR, message: 'Тым көп файл жіберілді. Бір сағаттан кейін қайталаңыз.',
-});
-app.post('/api/uploads', startLimit, async (req, res) => {
-  if (req.body?.kind !== 'document') throw new UserError('Сұрау қате құрылған.');
-  if (await store.countPending() >= config.MAX_PENDING) {
-    throw new UserError('Тексеру кезегі толды. Кейінірек қайталаңыз.', 503);
-  }
-  res.status(201).json(await startUpload(req.body, false));
-});
 if (usesDisk) {
-  app.put('/api/uploads/:id/content', async (req, res) => {
+  app.put('/api/uploads/:id/content', requireAdmin, async (req, res) => {
     res.set('Connection', 'close'); // a refused upload leaves the connection unusable
     const upload = await store.getUpload(req.params.id);
     if (!upload) throw new UserError('Жүктеу уақыты өтіп кетті. Файлды қайта таңдаңыз.');
@@ -117,10 +109,10 @@ if (usesDisk) {
     res.json({ ok: true });
   });
 }
-app.post('/api/submissions', async (req, res) => {
-  await createRecord(req, { isAdmin: false });
-  res.status(201).json({ ok: true });
-});
+
+/* ---------- Accounts and reviews ---------- */
+app.use('/api/users', users);
+app.use('/api/reviews', reviews);
 
 /* ---------- Admin API ---------- */
 app.post('/api/admin/login', rateLimit({
@@ -135,11 +127,13 @@ admin.get('/files', async (req, res) => {
   await cleanUpAbandoned();
   res.json((await store.listFiles()).map((f) => ({ ...publicView(f), status: f.status })));
 });
-admin.post('/uploads', async (req, res) => res.status(201).json(await startUpload(req.body, true)));
+admin.post('/uploads', async (req, res) => res.status(201).json(await startUpload(req.body)));
 admin.post('/files', async (req, res) => {
-  await createRecord(req, { isAdmin: true });
+  await createRecord(req);
   res.status(201).json({ ok: true });
 });
+
+admin.use('/reviews', adminReviews);
 
 const found = (value) => {
   if (!value) throw new UserError('Файл табылмады.', 404);
@@ -165,7 +159,7 @@ async function replaceHero(value, res) {
   res.json(await heroState());
 }
 admin.put('/hero/file', async (req, res) => {
-  const { pathname } = await finishUpload(req.body?.uploadId, 'hero', true);
+  const { pathname } = await finishUpload(req.body?.uploadId, 'hero');
   await replaceHero(`/${pathname}`, res);
 });
 admin.put('/hero/url', (req, res) => replaceHero(parseHeroUrl(req.body?.url), res));

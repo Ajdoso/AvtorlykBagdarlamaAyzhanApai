@@ -89,6 +89,16 @@ textarea.input { resize: vertical; }
 .skeleton { border-radius: 16px; background: linear-gradient(100deg, #E9F0E9 30%, #F7FAF7 50%, #E9F0E9 70%) 0 0 / 220% 100%; animation: shimmer 1.4s linear infinite; }
 @keyframes shimmer { from { background-position: 180% 0; } to { background-position: -40% 0; } }
 
+.stars { display: inline-flex; gap: 1px; vertical-align: middle; }
+.star { width: 20px; height: 20px; fill: #FFFFFF; stroke: #A97B1E; stroke-width: 1.5; stroke-linejoin: round; transition: fill .15s; }
+.star.is-on { fill: #E9BE5A; }
+.review-head { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .85rem; }
+.review-head h3 { font-size: 1.0625rem; letter-spacing: 0; overflow-wrap: anywhere; }
+.review-head p { color: var(--ink-soft); font-size: .9375rem; }
+.review-body { white-space: pre-line; overflow-wrap: anywhere; }
+.review-reply { display: grid; gap: .2rem; padding: 1rem 1.15rem; border-radius: 4px 14px 14px 14px; background: var(--mint); }
+.review-reply b { color: var(--green); font-weight: 600; font-size: .9375rem; }
+
 .toasts { position: fixed; right: 1.25rem; bottom: 1.25rem; left: 1.25rem; z-index: 100; display: grid; justify-items: end; gap: .6rem; pointer-events: none; }
 .toast { max-width: 420px; padding: .85rem 1.15rem; border-radius: 12px; background: var(--ink); color: var(--white); animation: dialog-in .25s var(--ease); }
 .toast.is-error { background: var(--danger); }

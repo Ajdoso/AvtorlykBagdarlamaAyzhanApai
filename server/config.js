@@ -31,4 +31,3 @@ export const FILE_EXTENSIONS = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xls
 export const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
 export const MAX_FILE_MB = 25;
 export const MAX_IMAGE_MB = 8;
-export const MAX_PENDING = 100; // unreviewed public submissions kept at once

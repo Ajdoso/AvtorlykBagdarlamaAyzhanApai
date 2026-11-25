@@ -27,6 +27,8 @@
         <a href="#topics">Тақырыптар</a>
         <a href="#safety">Қауіпсіздік</a>
         <a href="#library">Материалдар</a>
+        <a href="#reviews">Пікірлер</a>
+        <button class="nav-button" id="account-button" type="button" hidden>Кіру</button>
       </nav>
     </div>
   </header>
@@ -88,10 +90,28 @@
             <h2 id="library-title">Оқу материалдары</h2>
             <p>Нұсқаулықтар, презентациялар мен зертханалық жұмыстарды тегін жүктеп алыңыз.</p>
           </div>
-          <button class="button button-quiet" type="button" data-open-submit>Материал ұсыну</button>
         </div>
         <p class="visually-hidden" id="file-status" role="status"></p>
         <div id="file-list" class="file-grid"></div>
+      </div>
+    </section>
+
+    <section class="section reviews" id="reviews" aria-labelledby="reviews-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <h2 id="reviews-title">Пікірлер</h2>
+          <p>Сайтты бағалап, ойыңызды жазыңыз. Әкімші пікірлерге жауап береді.</p>
+        </div>
+        <div class="review-grid">
+          <div class="review-side">
+            <div class="review-summary" id="review-summary"></div>
+            <div class="review-write" id="review-write"></div>
+          </div>
+          <div>
+            <div class="review-list" id="review-list" aria-live="polite"></div>
+            <button class="button button-quiet review-more" id="review-more" type="button" hidden>Тағы көрсету</button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -103,21 +123,37 @@
     </div>
   </footer>
 
-  <dialog class="dialog" id="submit-dialog" aria-labelledby="submit-title">
-    <form class="form" id="submit-form" novalidate>
-      <div class="dialog-head">
-        <h2 id="submit-title">Материал ұсыну</h2>
-        <button class="icon-button" type="button" data-close aria-label="Терезені жабу">×</button>
-      </div>
-      <p class="form-note">Әкімші тексергеннен кейін материал сайтта жарияланады.</p>
-      <label class="field">Атауы<input class="input" name="title" maxlength="120" required></label>
-      <label class="field">Санаты<select class="input" name="category" required></select></label>
-      <label class="field">Сипаттамасы<textarea class="input" name="description" rows="3" maxlength="500" required></textarea></label>
-      <label class="field">Авторы (міндетті емес)<input class="input" name="author" maxlength="80" autocomplete="name"></label>
-      <div data-dropzone></div>
+  <dialog class="dialog" id="account-dialog" aria-labelledby="account-title">
+    <div class="dialog-head">
+      <h2 id="account-title">Аккаунтқа кіру</h2>
+      <button class="icon-button" type="button" data-close aria-label="Терезені жабу">×</button>
+    </div>
+    <form class="form account-form" id="login-form" novalidate>
+      <label class="field">Логин<input class="input" name="username" maxlength="24" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+      <label class="field">Құпиясөз<input class="input" type="password" name="password" maxlength="100" autocomplete="current-password" required></label>
       <p class="form-error" role="alert" hidden></p>
-      <button class="button" type="submit">Тексеруге жіберу</button>
+      <button class="button" type="submit">Кіру</button>
     </form>
+    <form class="form account-form" id="register-form" novalidate hidden>
+      <label class="field">Атыңыз<input class="input" name="name" maxlength="40" autocomplete="nickname" required></label>
+      <p class="form-note field-note">Пікіріңіздің жанында осы ат көрінеді. Толық аты-жөніңізді жазу міндетті емес.</p>
+      <label class="field">Логин<input class="input" name="username" maxlength="24" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+      <label class="field">Құпиясөз<input class="input" type="password" name="password" maxlength="100" autocomplete="new-password" required></label>
+      <p class="form-note field-note">Кемінде 8 таңба. Құпиясөзді есте сақтаңыз: оны қалпына келтіру мүмкін емес.</p>
+      <div class="trap" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p class="form-error" role="alert" hidden></p>
+      <button class="button" type="submit">Тіркелу</button>
+    </form>
+    <button class="link-button" id="account-switch" type="button">Жаңа аккаунт ашу</button>
+  </dialog>
+
+  <dialog class="dialog" id="confirm-dialog" aria-labelledby="confirm-title">
+    <h2 id="confirm-title"></h2>
+    <p class="confirm-text" id="confirm-text"></p>
+    <div class="dialog-actions">
+      <button class="button button-quiet" type="button" data-close>Бас тарту</button>
+      <button class="button button-danger" id="confirm-run" type="button">Жою</button>
+    </div>
   </dialog>
 </body>
 </html>

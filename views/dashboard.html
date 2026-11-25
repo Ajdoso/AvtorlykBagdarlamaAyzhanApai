@@ -24,13 +24,23 @@
   </header>
 
   <main class="wrap admin-main">
-    <section class="panel files-panel" aria-labelledby="files-title">
-      <div class="panel-head">
+    <div class="main-column">
+      <section class="panel" aria-labelledby="files-title">
         <h2 id="files-title">Файлдар</h2>
-        <div class="segmented" id="status-filter" role="group" aria-label="Күйі бойынша сүзу"></div>
-      </div>
-      <div id="admin-files"></div>
-    </section>
+        <div id="admin-files"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="reviews-title">
+        <div class="panel-head">
+          <div>
+            <h2 id="reviews-title">Пікірлер</h2>
+            <p class="form-note" id="admin-review-summary"></p>
+          </div>
+          <div class="segmented" id="review-filter" role="group" aria-label="Күйі бойынша сүзу"></div>
+        </div>
+        <div id="admin-reviews"></div>
+      </section>
+    </div>
 
     <div class="side">
       <section class="panel" aria-labelledby="upload-title">
@@ -75,6 +85,15 @@
       <p class="form-error" role="alert" hidden></p>
       <button class="button" type="submit">Сақтау</button>
     </form>
+  </dialog>
+
+  <dialog class="dialog" id="review-delete-dialog" aria-labelledby="review-delete-title">
+    <h2 id="review-delete-title">Пікірді жою керек пе?</h2>
+    <p class="delete-text" id="review-delete-text"></p>
+    <div class="dialog-actions">
+      <button class="button button-quiet" type="button" data-close>Бас тарту</button>
+      <button class="button button-danger" id="review-delete-confirm" type="button">Жою</button>
+    </div>
   </dialog>
 
   <dialog class="dialog" id="delete-dialog" aria-labelledby="delete-title">

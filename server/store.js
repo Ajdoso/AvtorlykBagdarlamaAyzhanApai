@@ -41,10 +41,6 @@ export async function removeFile(id) {
 
 export const countDownload = (id) => query('UPDATE files SET downloads = downloads + 1 WHERE id = $1', [id]);
 
-export async function countPending() {
-  return (await query("SELECT count(*)::int AS n FROM files WHERE status = 'pending'"))[0].n;
-}
-
 /* Hero image */
 export async function getHero() {
   return (await query("SELECT value FROM settings WHERE key = 'hero'"))[0]?.value ?? null;

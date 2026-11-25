@@ -13,6 +13,19 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS uploads (
     id uuid PRIMARY KEY, pathname text NOT NULL, kind text NOT NULL, is_admin boolean NOT NULL,
     expires_at timestamptz NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS users (
+    id uuid PRIMARY KEY, username text NOT NULL UNIQUE, name text NOT NULL, password_hash text NOT NULL,
+    blocked boolean NOT NULL DEFAULT false, created_at timestamptz NOT NULL DEFAULT now())`,
+  `CREATE TABLE IF NOT EXISTS user_sessions (
+    token_hash text PRIMARY KEY, user_id uuid NOT NULL REFERENCES users ON DELETE CASCADE,
+    expires_at timestamptz NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS reviews (
+    id uuid PRIMARY KEY, user_id uuid NOT NULL UNIQUE REFERENCES users ON DELETE CASCADE,
+    rating smallint NOT NULL CHECK (rating BETWEEN 1 AND 5), body text NOT NULL, fingerprint text NOT NULL,
+    status text NOT NULL, edited boolean NOT NULL DEFAULT false, reply text, replied_at timestamptz,
+    created_at timestamptz NOT NULL DEFAULT now())`,
+  `CREATE TABLE IF NOT EXISTS challenges (
+    id uuid PRIMARY KEY, valid_from timestamptz NOT NULL, expires_at timestamptz NOT NULL)`,
   'CREATE TABLE IF NOT EXISTS rate_limits (key text PRIMARY KEY, count integer NOT NULL, reset_at timestamptz NOT NULL)',
 ];
 

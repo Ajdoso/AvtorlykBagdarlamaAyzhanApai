@@ -61,10 +61,18 @@ It can be run again safely; files already online are skipped.
 
 Use 1920x1200 or larger with the subject on the right: the title sits on the left.
 
-## Uploads
+## Files
 
-Visitors submit with «Материал ұсыну»; the file stays hidden until the admin presses «Жариялау».
-PDF, DOC(X), PPT(X), XLS(X), TXT, up to 25 MB. Files are not virus-scanned: check before publishing.
+Only the admin adds files: PDF, DOC(X), PPT(X), XLS(X), TXT, up to 25 MB.
+
+## Reviews and accounts
+
+- A visitor registers with a display name, a login and a password (stored as a scrypt hash), then leaves one review with 1-5 stars.
+  They can edit or delete it and delete the account. No email is collected, so a forgotten password cannot be restored.
+- The admin replies to, hides or deletes reviews and blocks authors under «Пікірлер» in `/admin`.
+- Spam protection (`server/spam.js`): one review per account, a hidden puzzle and a trap field at registration, limits per address
+  and account, no links, phone numbers, emails, repeated characters or copied texts. Rude words send a review to the admin first.
+- Everything is stored in the database; tables are created automatically.
 
 ## Structure
 
@@ -75,7 +83,8 @@ PDF, DOC(X), PPT(X), XLS(X), TXT, up to 25 MB. Files are not virus-scanned: chec
 | `server/config.js` | Login, hero image, file limits |
 | `server/db.js`, `server/store.js` | Database connection and queries |
 | `server/storage.js` | File contents: Blob or `data/` |
-| `server/uploads.js`, `server/auth.js` | Upload checks, login |
+| `server/uploads.js`, `server/auth.js` | Upload checks, admin login |
+| `server/users.js`, `server/reviews.js`, `server/spam.js` | Accounts, reviews, spam protection |
 | `scripts/push-data.js` | Copies local files online |
 | `views/`, `public/` | Pages, styles, scripts |
 | `public/js/site/content.js` | Educational texts |

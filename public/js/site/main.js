@@ -1,5 +1,7 @@
+import { initAccount } from './account.js';
 import { initHero } from './hero.js';
 import { initLibrary } from './library.js';
+import { initReviews } from './reviews.js';
 import { initTopics } from './topics.js';
 
 function initHeader() {
@@ -40,4 +42,6 @@ initHeader();
 initReveal();
 initTopics();
 initLibrary();
+initReviews();
+initAccount();
 initHero();

@@ -1,13 +1,8 @@
 import { api } from '../shared/api.js';
-import { createDropzone, handleForm, metaProblem, setupDialog } from '../shared/forms.js';
-import { sendFileForm } from '../shared/upload.js';
-import {
-  CATEGORIES, fileType, fillCategories, formatDate, formatSize, h, stateBlock, toast,
-} from '../shared/utils.js';
+import { CATEGORIES, fileType, formatDate, formatSize, h, stateBlock } from '../shared/utils.js';
 
 const list = document.getElementById('file-list');
 const status = document.getElementById('file-status');
-const dialog = document.getElementById('submit-dialog');
 
 let files = [];
 
@@ -33,10 +28,7 @@ function render() {
     list.replaceChildren(...files.map(card));
     return;
   }
-  list.replaceChildren(stateBlock({
-    title: 'Әзірге материал жоқ', text: 'Алғашқы материалды сіз ұсына аласыз.',
-    action: { label: 'Материал ұсыну', run: () => dialog.showModal() },
-  }));
+  list.replaceChildren(stateBlock({ title: 'Әзірге материал жоқ', text: 'Материалдар жақын арада қосылады.' }));
 }
 
 async function load() {
@@ -56,26 +48,6 @@ async function load() {
   }
 }
 
-function initSubmission() {
-  const form = document.getElementById('submit-form');
-  fillCategories(form.elements.category);
-  const dropzone = createDropzone(form.querySelector('[data-dropzone]'), 'document');
-  setupDialog(dialog);
-  document.querySelector('[data-open-submit]').addEventListener('click', () => dialog.showModal());
-  handleForm(form, {
-    busyLabel: 'Жіберілуде…',
-    validate: () => metaProblem(form) || dropzone.problem(),
-    send: async (data) => {
-      await sendFileForm(data, { startPath: '/uploads', path: '/submissions' });
-      form.reset();
-      dropzone.reset();
-      dialog.close();
-      toast('Материал тексеруге жіберілді.');
-    },
-  });
-}
-
 export function initLibrary() {
-  initSubmission();
   load();
 }
